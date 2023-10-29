@@ -1,1 +1,2 @@
-export { myEnv } from './env';
+export { axiosPrivate } from './axios.config';
+export { env } from './env.config';
