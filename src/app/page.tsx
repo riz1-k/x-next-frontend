@@ -1,7 +1,5 @@
 import { type Metadata } from 'next';
-import { cookies } from 'next/headers';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
 import { Button } from '~/components/ui/button';
 
@@ -13,10 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default function Index() {
-  const token = cookies().get('x-session-token');
-  if (token) {
-    return redirect('/home');
-  }
   return (
     <main>
       <section className='my-10 grid h-full min-h-[85vh] grid-cols-1 gap-x-10 md:grid-cols-2'>
