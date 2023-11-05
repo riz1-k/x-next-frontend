@@ -14,16 +14,15 @@ const responseSchema = z.object({
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const nextReponse = NextResponse.next();
+  const nextResponse = NextResponse.next();
   const oldToken = cookies().get('x-session-token')?.value;
 
   if (pathname === '/' && oldToken) {
     console.log('2');
     const homeUrl = new URL('/home', request.url);
     NextResponse.redirect(homeUrl.href);
-    return nextReponse;
+    return nextResponse;
   }
-  console.log('3');
 
   try {
     if (!oldToken) {
@@ -40,22 +39,22 @@ export async function middleware(request: NextRequest) {
       throw new Error('Invalid token');
     }
     const data = await response.json();
-    console.log('data', data);
+
     const { refreshToken, user } = responseSchema.parse(data.data);
 
-    nextReponse.cookies.set('x-session-token', refreshToken, {
+    nextResponse.cookies.set('x-session-token', refreshToken, {
       httpOnly: true,
       secure: true,
       path: '/',
       sameSite: 'strict',
     });
 
-    nextReponse.headers.set('x-user', JSON.stringify(user));
+    nextResponse.headers.set('x-user', JSON.stringify(user));
 
-    return nextReponse;
+    return nextResponse;
   } catch (err) {
-    nextReponse.headers.set('x-user', JSON.stringify(null));
-    nextReponse.cookies.delete('x-session-token');
+    nextResponse.headers.set('x-user', JSON.stringify(null));
+    nextResponse.cookies.delete('x-session-token');
   } finally {
     NextResponse.next();
   }

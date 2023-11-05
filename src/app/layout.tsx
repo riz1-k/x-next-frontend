@@ -20,8 +20,7 @@ export default async function RootLayout({
   return (
     <html lang='en' data-theme='dark'>
       <body>
-        <ClientWrapper {...clientWrapperData} />
-        {children}
+        <ClientWrapper {...clientWrapperData}>{children}</ClientWrapper>
       </body>
       <Toaster richColors />
     </html>

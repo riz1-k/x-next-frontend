@@ -1,8 +1,7 @@
 import axios from 'axios';
-
-// import { env } from '.';
+import { env } from '~/lib/configs/env.config';
 
 export const axiosPrivate = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: env.BACKEND_URL,
   withCredentials: true,
 });

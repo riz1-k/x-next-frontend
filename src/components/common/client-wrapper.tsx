@@ -1,16 +1,33 @@
 'use client';
 
-import { useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { type ReactNode, useEffect, useState } from 'react';
 
 import { useAuthUser } from '~/lib/store';
 import { authUserSchema } from '~/lib/store/slices/useAuth/user-types';
 
 interface Props {
   userDataString: string | null;
+  children: ReactNode;
 }
 
-export const ClientWrapper: React.FC<Props> = ({ userDataString }) => {
+export const ClientWrapper: React.FC<Props> = ({
+  userDataString,
+  children,
+}) => {
   const { setAuthUser } = useAuthUser();
+
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
 
   useEffect(() => {
     function saveUser() {
@@ -25,5 +42,7 @@ export const ClientWrapper: React.FC<Props> = ({ userDataString }) => {
     saveUser();
   }, []);
 
-  return null;
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 };

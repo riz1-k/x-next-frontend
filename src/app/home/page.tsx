@@ -1,9 +1,12 @@
-'use client';
+import { HomeFeed } from '~/app/home/_components/feed';
 
-import { useAuthUser } from '~/lib/store';
+import { CreateTweet } from './_components/feed/CreateTweet';
 
 export default function HomePage() {
-  const { authUser } = useAuthUser();
-  console.log(authUser);
-  return <h1>Hello world</h1>;
+  return (
+    <main>
+      <CreateTweet />
+      <HomeFeed />
+    </main>
+  );
 }
